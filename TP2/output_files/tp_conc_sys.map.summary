@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Mon Feb 09 12:13:48 2026
+Quartus II 32-bit Version : 13.0.1 Build 232 06/12/2013 SP 1 SJ Full Version
+Revision Name : tp_conc_sys
+Top-level Entity Name : Lights
+Family : Cyclone IV E
+Total logic elements : 2,556
+    Total combinational functions : 2,156
+    Dedicated logic registers : 1,476
+Total registers : 1476
+Total pins : 49
+Total virtual pins : 0
+Total memory bits : 44,032
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0
