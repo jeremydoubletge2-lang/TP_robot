@@ -1,27 +1,35 @@
-Connexion du robot avec la SDRAM
+## Explication du programme : lecture des switches et affichage sur les LEDs
 
-La connexion avec la SDRAM est réalisée dans l’architecture Structure grâce à l’instanciation du composant nios_system.
+Ce programme en langage C utilise des **adresses mémoire mappées** pour lire l’état des interrupteurs (*switches*) et afficher cet état sur des LEDs.
 
-1) Déclaration des broches SDRAM
+### Déclaration des périphériques
+```c
+#define switches (volatile char *) 0x04003000
+#define leds (char *) 0x04003010
 
-Dans l’entité Lights, toutes les broches physiques de la mémoire sont déclarées :
+switches pointe vers l’adresse mémoire des interrupteurs.
+leds pointe vers l’adresse mémoire des LEDs.
+Le mot-clé volatile est utilisé pour switches afin d’indiquer que cette valeur peut changer à tout moment en fonction du matériel.
+Fonctionnement
 
-DRAM_CLK, DRAM_CKE : OUT STD_LOGIC;
-DRAM_ADDR : OUT STD_LOGIC_VECTOR(12 DOWNTO 0);
-DRAM_BA : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-DRAM_CS_N, DRAM_CAS_N, DRAM_RAS_N, DRAM_WE_N : OUT STD_LOGIC;
-DRAM_DQ : INOUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-DRAM_DQM : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+Dans la fonction principale, une boucle infinie est utilisée :
 
-Chaque signal correspond à une vraie broche de la puce SDRAM présente sur la carte.
+void main()
+{
+    while (1)
+        *leds = *switches;
+}
 
-Rôle des signaux
-DRAM_ADDR → adresse mémoire
-DRAM_BA → sélection de banque mémoire
-DRAM_DQ → bus de données 16 bits
-DRAM_WE_N → écriture
-DRAM_RAS_N / DRAM_CAS_N → sélection ligne/colonne
-DRAM_CS_N → activation de la puce
-DRAM_DQM → masquage des octets
-DRAM_CLK → horloge SDRAM
-DRAM_CKE → activation de l’horloge
+Le programme effectue en continu les opérations suivantes :
+
+lit la valeur actuelle des interrupteurs ;
+copie cette valeur dans le registre des LEDs ;
+met à jour instantanément l’affichage lumineux.
+Résultat
+
+Chaque LED représente l’état du switch correspondant :
+
+switch activé → LED allumée ;
+switch désactivé → LED éteinte.
+
+Cela permet de visualiser directement sur les LEDs la position des interrupteurs en temps réel.
